@@ -1,22 +1,95 @@
-#常言道：python大法好#
+#MUA#
 
-MUA 解释器 V1.0 开发者：DT
-使用方法：在shell终端当前目录下输入
-python mua.py [filename]
-即为执行[filename]内的mua脚本
-例如：python mua.py aa.mua
+MUA interpreter V1.0 Developer: DarkTango
+useage:python mua.py [filename]
 
-包含库（均为python2.7内置库，无第三方库）：
-string
-copy
-math
-time
-random
+what is MUA?
 
-几点说明：
-1.说明文件内判断是否相等为eq，但示例代码给出的为equ，我以说明文件为准，将aa.mua内的equ全部改为eq
-2.mua.py是驱动程序，运行时只要执行这个脚本即可。
-3.lex.py为词法分析器，目的是将输入的字符串做词法分析，提取token。
-4.LRParser.py为语法分析器，也是核心模块，采用LR(0)分析法对输入的token进行解析，解释器的工作全部在这里完成。
-5.save所产生的文件名字以.namespace为后缀，程序内设置文件名时不需要加后缀，load的时候也不需要加后缀，只需要保证在同一文件夹即可。
-6.说明文件内提到的功能均已测试可以正常工作。
+# MakeUp Programming Language
+
+## 基本数据类型value
+
+数字number，单词word，列表list，布尔bool
+
+* 数字：以[0~9]或'-'开头，不区分整数，浮点数
+* 单词：以双引号"开头，不含空格，采用Unicode编码
+* 列表：以方括号[]包含，其中的元素以空格分隔；元素可是任意类型；元素类型可不一致
+
+## 基本操作
+
+基本形式：操作名 参数
+
+操作名是一个不含空格的词，与参数间以空格分隔。参数可以有多个，多个参数间以空格分隔。每个操作所需的参数数量是确定的，所以不需要括号或语句结束符号
+
+基本操作
+
+* `//`：注释
+* `make <word> <value>`： 将value绑定到word上。基本操作的单词不能用做这里的word。绑定后的word称作名字，位于命名空间 ok
+* `thing <word>`：返回word所绑定的值 ok
+* `: <word>`：与thing相同 ok
+* `erase <word>`：清除word所绑定的值 ok
+* `isname <word>`：返回word是否是一个名字 ok
+* `print <value>`：输出value ok
+* `read`：返回一个从标准输入读取的数字或单词 ok
+* `readlinst`：返回一个从标准输入读取的一行，构成一个列表，行中每个以空格分隔的部分是list的一个元素
+* 运算符operator
+	* `add`, `sub`, `mul`, `div`, `mod`：`<operator> <number> <number>`
+	* `eq`, `gt`, `lt`：`<operator> <number|word> <number|word>`
+	* `and`, `or`：`<operator> <bool> <bool>`
+	* `not`：`not <bool>`
+* `random <number>`：返回[0,number>的一个随机数 ok 
+* `sqrt <number>`：返回number的平方根 ok
+* `isnumber <value>`：返回value是否是数字 ok 
+* `isword <value>`：返回value是否是单词 ok
+* `islist <value>`：返回value是否是列表 ok
+* `isbool <value>`：返回value是否是布尔量 ok
+* `isempty <word|list>`: 返回word或list是否是空 ok
+* `test <value>`：测试value是真是假 ok
+* `iftrue <list>`：如果之前最后一次test是真，则执行list ok
+* `iffalse <list>`：如果之前最后一次test是假，则执行list ok
+* `word <word> <word|number|bool>`：将两个word合并为一个word，第二个值可以是word、number或bool ok
+* `list <list1> <list2>`：将list1和list2合并成一个列表，两个列表的元素并列，list1的在list2的前面 ok
+* `join <list> <value>`：将value作为list的最后一个元素加入到list中（如果value是列表，则整个value成为列表的最后一个元素）ok
+* `first <word|list>`：返回word的第一个字符，或list的第一个元素 ok
+* `last <word|list>`：返回word的最后一个字符，list的最后一个元素 ok
+* `butfirst <word|list>`：返回除第一个元素外剩下的列表，或除第一个字符外剩下的单词 ok
+* `butlast <word|list>`：返回除最后一个元素外剩下的列表，或除最后一个字符外剩下的单词 ok 
+* `item <number> <word|list>`：返回word或列表中的第number项字符或元素 ok
+* `repeat <number> <list>`：运行list中的代码number次 ok
+* `stop`：停止当前代码的执行。当前代码可能是run、repeat、if或函数中的代码 ok
+* `wait <number>`：等待number个ms ok
+* `save <word>`：保存当前命名空间在word文件中 ok
+* `load <word>`：从word文件中装载内容，加入当前命名空间 ok
+* `erall`：清除当前命名空间的全部内容 ok 
+* `poall`：列出当前命名空间的全部名字 ok
+
+## 函数定义和调用
+
+### 定义
+
+		make <word> [<list1> <list2>]
+			word为函数名
+			list1为参数列表
+			list2为操作列表
+
+### 调用
+
+		<functionName> <arglist>
+			<functionName>为make中定义的函数名，不需要双引号"
+			<arglist>是参数列表，<arglist>中的值和函数定义时的<list1>中名字进行一一对应绑定
+
+### 函数相关的操作
+			
+* `output <value>`：设定value为返回给调用者的值，但是不停止执行
+* `stop`：停止执行
+* `local <word>`：设定该word为本地名字。参数也是本地名字
+
+## 既有名字
+
+系统提供了一些常用的量，或可以由其他操作实现但是常用的操作，作为固有的名字。这些名字是可以被删除（erase）的。
+
+* `pi`：3.14159
+* `if <bool> <list1> <list2>`：如果bool为真，则执行list1，否则执行list2。list均可以为空表
+* `run <list>`：运行list中的代码
+
+
