@@ -1,0 +1,31 @@
+make "sort 
+[[a]
+[
+	test isempty :a
+	iftrue [output :a stop]
+	make "m min :a
+	output list join [] :m sort delete :a :m
+]]
+
+make "min
+[[a]
+[
+	test isempty butfirst :a
+	iftrue [output first :a stop]
+	make "lmin min butfirst :a
+	test lt first :a :lmin
+	iftrue [output first :a stop]
+	output :lmin
+]]
+
+make "delete
+[[a ele]
+[
+	test isempty :a
+	iftrue [output :a stop]
+	test eq first :a :ele
+	iftrue [output butfirst :a stop]
+	output list join [] first :a delete butfirst :a :ele
+]]
+
+print sort [2 12 3 8 34 9 10]
