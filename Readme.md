@@ -1,6 +1,6 @@
-#常言道：python大法好#
+#常言道：python大法好,400行写MUA#
 
-MUA 解释器 V1.0 开发者：DT
+MUA 解释器 V1.0 开发者：肖昶 3120104234
 使用方法：在shell终端当前目录下输入
 python mua.py [filename]
 即为执行[filename]内的mua脚本

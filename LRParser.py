@@ -343,6 +343,8 @@ def parse(index): # main function for parsing, call it recursively
 
 def execute():
 	i = 0
+	namespaces[0]['pi'] = 3.14159
+	namespaces[0]['run'] = [['code'],['repeat',1,':','code']]
 	while i < len(tokens[0]):
 		parse(i)
 		i = i + 1

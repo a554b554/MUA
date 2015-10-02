@@ -27,6 +27,5 @@ make "delete
 	iftrue [output butfirst :a stop]
 	output list join [] first :a delete butfirst :a :ele
 ]]
-print random 23
 print sort [6 45 7 3 1 2]
 
