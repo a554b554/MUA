@@ -1,22 +1,97 @@
-#常言道：python大法好,400行写MUA#
+Life is Short, I use MUA#
 
-MUA 解释器 V1.0 开发者：肖昶 3120104234
-使用方法：在shell终端当前目录下输入
-python mua.py [filename]
-即为执行[filename]内的mua脚本
-例如：python mua.py aa.mua
 
-包含库（均为python2.7内置库，无第三方库）：
-string
-copy
-math
-time
-random
+#MUA#
 
-几点说明：
-1.说明文件内判断是否相等为eq，但示例代码给出的为equ，我以说明文件为准，将aa.mua内的equ全部改为eq
-2.mua.py是驱动程序，运行时只要执行这个脚本即可。
-3.lex.py为词法分析器，目的是将输入的字符串做词法分析，提取token。
-4.LRParser.py为语法分析器，也是核心模块，采用LR(0)分析法对输入的token进行解析，解释器的工作全部在这里完成。
-5.save所产生的文件名字以.namespace为后缀，程序内设置文件名时不需要加后缀，load的时候也不需要加后缀，只需要保证在同一文件夹即可。
-6.说明文件内提到的功能均已测试可以正常工作。
+MUA interpreter V1.0 
+
+`Developer`: DarkTango
+
+`useage`:python mua.py [filename]
+
+what is MUA?
+
+# MakeUp Programming Language
+
+## Basic Value Type
+
+
+
+* `number`: begin with `[0~9]` or `-`, no difference between float and int.
+* `word`: start with `"`, unicode encoding.
+* `list`：start with `[]` , use `,` to split element；elements in list can be any and different type.
+
+## Basic Operation
+
+
+###Basic Format
+[operator] [arguments]
+
+Operator is a word without space. Each operator can have any numbers of arguments, arguments split by space.
+
+###Basic Funtion
+
+* `//`: comments
+* `make <word> <value>`： assign value to word and add word to namespace.
+* `thing <word>`: return the value of word.
+* `: <word>`: the same as `thing`.
+* `erase <word>`: erase "word" from namespace.
+* `isname <word>`: return the bool value that if word is exist in namespace.
+* `print <value>`: print the value.
+* `read`: read a value or string from stdin.
+* `readlinst`: read a line from stdin and combine them to a list.
+* arithmatic operator
+    * `add`, `sub`, `mul`, `div`, `mod`：`<operator> <number> <number>`
+	* `eq`, `gt`, `lt`：`<operator> <number|word> <number|word>`
+	* `and`, `or`：`<operator> <bool> <bool>`
+	* `not`：`not <bool>`
+* `random <number>`: return a random number from [0, number).
+* `sqrt <number>`: return sqrt(number)
+* `isnumber <value>`": return a bool value that if the value is a number 
+* `isword <value>`: is a word?
+* `islist <value>` is a list?
+* `isbool <value>` is a boolean?
+* `isempty <word|list>`: is a list empty?
+* `test <value>`：return the bool of value
+* `iftrue <list>`: if last test is true, excute the code in list.
+* `iffalse <list>`: if last test if false, excute the code in list.
+* `word <word> <word|number|bool>`: combine two word into one word.
+* `list <list1> <list2>`: combine two list into one list.
+* `join <list> <value>`: append value into the end of list.
+* `first <word|list>`: return the first element of list/word.
+* `last <word|list>`: return the last element of list/word.
+* `butfirst <word|list>`: return the whole word/list except the first element.
+* `butlast <word|list>`: return the whole word/list except the last element. 
+* `item <number> <word|list>`: return the number's index element of word/list.
+* `repeat <number> <list>`: excute the code in list number times.
+* `stop`: stop the excution in a list.
+* `wait <number>`: wait number second.
+* `save <word>`: save the namespace in filesystem.
+* `load <word>`: load the namespace from filesystem.
+* `erall`: clear namespace.
+* `poall`: list the namespace.
+
+## Define and Call a Function
+
+### Define
+
+		make <word> [<list1> <list2>]
+			word: function name
+			list1: arguments list
+			list2: operation list
+
+### Call
+
+		<functionName> <arglist>
+			<functionName> name of funtion
+			<arglist>arguments list 
+
+
+## Built-in value
+
+
+* `pi`：3.14159
+* `if <bool> <list1> <list2>`: if bool is true, then excute list1, otherwise excute list2.
+* `run <list>`: run code in list.
+
+
